@@ -1,11 +1,10 @@
 {
-  "name": "مطافي الجيزة 🚒",
+  "name": "مطافي الجيزة",
   "short_name": "مطافي الجيزة",
-  "lang": "ar",
-  "dir": "rtl",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#0a2a66",
-  "theme_color": "#0a2a66",
-  "description": "نظام نقاط الإطفاء والبلاغات - الجيزة"
+  "dir": "rtl",
+  "lang": "ar",
+  "background_color": "#eef3f7",
+  "theme_color": "#12395b"
 }

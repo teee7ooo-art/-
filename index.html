@@ -2,10 +2,10 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="مطافي الجيزة"><meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>مطافي الجيزة</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#eef3f7;color:#17202a;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);-webkit-text-size-adjust:100%;}.header{background:#12395b;color:#fff;padding:15px;text-align:center}.header h1{margin:0;font-size:23px}.header p{margin:6px 0 0}.container{max-width:900px;margin:auto;padding:10px}.card{background:#fff;border-radius:12px;padding:12px;margin-bottom:10px;box-shadow:0 2px 8px #bbb}label{display:block;font-weight:bold;margin:7px 0}select,input{width:100%;padding:13px;border:1px solid #aaa;border-radius:8px;font-size:16px;background:#fff}button{width:100%;border:0;border-radius:9px;padding:14px;font-size:16px;font-weight:bold;color:#fff;margin-top:7px;min-height:50px;-webkit-appearance:none;appearance:none;touch-action:manipulation;cursor:pointer}.grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.blue{background:#125a91}.green{background:#168447}.red{background:#b51f25}.orange{background:#d87900}.dark{background:#263746}.mapbox{height:420px;border-radius:10px;overflow:hidden;border:1px solid #aaa;background:#ddd}.mapbox iframe{width:100%;height:100%;border:0}.info{background:#f5f8fa;border-right:5px solid #125a91;padding:10px;margin-top:10px;line-height:1.9}.status{text-align:center;font-weight:bold;padding:9px}.footer{text-align:center;color:#666;padding:12px;font-size:12px}@media(max-width:600px){.grid{grid-template-columns:1fr 1fr}.mapbox{height:390px}}
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#eef3f7;color:#17202a}.header{background:#12395b;color:#fff;padding:15px;text-align:center}.header h1{margin:0;font-size:23px}.header p{margin:6px 0 0}.container{max-width:900px;margin:auto;padding:10px}.card{background:#fff;border-radius:12px;padding:12px;margin-bottom:10px;box-shadow:0 2px 8px #bbb}label{display:block;font-weight:bold;margin:7px 0}select,input{width:100%;padding:13px;border:1px solid #aaa;border-radius:8px;font-size:16px;background:#fff}button{width:100%;border:0;border-radius:9px;padding:13px;font-size:16px;font-weight:bold;color:#fff;margin-top:7px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.blue{background:#125a91}.green{background:#168447}.red{background:#b51f25}.orange{background:#d87900}.dark{background:#263746}.mapbox{height:420px;border-radius:10px;overflow:hidden;border:1px solid #aaa;background:#ddd}.mapbox iframe{width:100%;height:100%;border:0}.info{background:#f5f8fa;border-right:5px solid #125a91;padding:10px;margin-top:10px;line-height:1.9}.status{text-align:center;font-weight:bold;padding:9px}.footer{text-align:center;color:#666;padding:12px;font-size:12px}@media(max-width:600px){.grid{grid-template-columns:1fr 1fr}.mapbox{height:390px}}
 </style>
 </head>
 <body>
@@ -157,7 +157,7 @@ function myLocation(){
 
     var u=openGoogleMapsForCurrentLocation(a+", الجيزة مصر");
 
-    window.open(u,"_blank");
+    window.location.href=u;
 }
 /* استخدام نقطة من القائمة */
 function useStation(){
@@ -227,7 +227,7 @@ function openRoute(){
 
     setStatus("🗺️ جاري فتح Google Maps...");
 
-    window.open(u,"_blank");
+    window.location.href=u;
 }
 /* واتساب */
 function shareWhatsApp(){
@@ -276,7 +276,8 @@ function shareWhatsApp(){
 
     saveState();
 
-    window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank");
+    window.location.href=
+        "https://wa.me/?text="+encodeURIComponent(text);
 }
 /* حفظ */
 function saveReport(show){
