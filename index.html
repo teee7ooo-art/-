@@ -2,194 +2,400 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0a2a66">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="مطافي الجيزة">
-<link rel="manifest" href="./manifest.webmanifest">
-<title>مطافي الجيزة 62 نقطة 🚒</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="مطافي الجيزة"><meta name="format-detection" content="telephone=no">
+<title>مطافي الجيزة</title>
 <style>
-* { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-html, body { min-height: 100%; -webkit-text-size-adjust: 100%; }
-body { padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
-button, select, input { -webkit-appearance: none; appearance: none; }
-button { cursor: pointer; touch-action: manipulation; }
-#map { touch-action: pan-x pan-y; }
-
-body { font-family: Arial; background: #0a2a66; padding: 10px; text-align: center; margin:0; color:white; }
-.container { background: white; padding: 12px; border-radius: 15px; border: 3px solid #d4af37; color:black; }
-h1 { color: #d32f2f; font-size: 20px; margin:5px 0; }
-select, input { width: 95%; padding: 10px; margin: 8px 0; font-size: 15px; border: 2px solid #d4af37; border-radius: 8px; }
-button { background: #d32f2f; color: white; padding: 12px; width: 95%; border: none; border-radius: 8px; font-size: 16px; margin: 4px 0; font-weight: bold; }
-.btn-green { background: #25D366; }
-.btn-blue { background: #0a2a66; }
-.btn-orange { background: #ff9800; color:black; }
-label { font-weight: bold; color: #0a2a66; font-size: 15px; }
-#map { height: min(55vh, 500px); min-height: 320px; width: 100%; border-radius: 10px; margin-top: 8px; border:2px solid #d4af37; cursor: crosshair; }
-#result { text-align:right; margin-top:8px; font-size:14px; background:#f5f5f5; padding:8px; border-radius:8px; display:none; max-height:200px; overflow-y:auto;}
-.distance-label { background: yellow; padding: 3px 6px; border-radius: 5px; font-size: 12px; font-weight: bold; border:2px solid red; color:red; }
-.note { background: #fff3cd; padding:8px; border-radius:8px; color:black; font-size:13px; margin:8px 0;}
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#eef3f7;color:#17202a;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);-webkit-text-size-adjust:100%;}.header{background:#12395b;color:#fff;padding:15px;text-align:center}.header h1{margin:0;font-size:23px}.header p{margin:6px 0 0}.container{max-width:900px;margin:auto;padding:10px}.card{background:#fff;border-radius:12px;padding:12px;margin-bottom:10px;box-shadow:0 2px 8px #bbb}label{display:block;font-weight:bold;margin:7px 0}select,input{width:100%;padding:13px;border:1px solid #aaa;border-radius:8px;font-size:16px;background:#fff}button{width:100%;border:0;border-radius:9px;padding:14px;font-size:16px;font-weight:bold;color:#fff;margin-top:7px;min-height:50px;-webkit-appearance:none;appearance:none;touch-action:manipulation;cursor:pointer}.grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.blue{background:#125a91}.green{background:#168447}.red{background:#b51f25}.orange{background:#d87900}.dark{background:#263746}.mapbox{height:420px;border-radius:10px;overflow:hidden;border:1px solid #aaa;background:#ddd}.mapbox iframe{width:100%;height:100%;border:0}.info{background:#f5f8fa;border-right:5px solid #125a91;padding:10px;margin-top:10px;line-height:1.9}.status{text-align:center;font-weight:bold;padding:9px}.footer{text-align:center;color:#666;padding:12px;font-size:12px}@media(max-width:600px){.grid{grid-template-columns:1fr 1fr}.mapbox{height:390px}}
 </style>
 </head>
 <body>
+<div class="header"><h1>🚒 مطافي الجيزة</h1><p>توجيه سيارات الإطفاء إلى موقع البلاغ</p></div>
 <div class="container">
-<h1>🚒 عمليات مطافي الجيزة - 62 نقطة</h1>
-
-<label>1. نقطة الاطفاء</label>
-<select id="management"></select>
-
-<label>2. عنوان البلاغ</label>
-<input type="text" id="address" placeholder="مثال: العشرين فيصل الجيزة">
-<button type="button" class="btn-orange" onclick="searchAddress()">📍 ابحث وارسم الخطوط</button>
-
-<div class="note">او دوس على الخريطة تحت عشان تحدد المكان<br>📱 يعمل على iPhone وSafari ويحتاج اتصال بالإنترنت</div>
-
-<button type="button" onclick="showRoute()">عرض المسار في جوجل</button>
-<button type="button" class="btn-blue" onclick="showAllHydrants()">📍 اظهار كل النقاط</button>
-<button type="button" class="btn-green" onclick="shareWhatsApp()">مشاركة واتساب</button>
-
-<div id="map"></div>
-<div id="result"></div>
+<div class="card">
+<label>نقطة / محطة الانطلاق</label>
+<select id="station"><option value="">اختر نقطة المطافي</option></select>
+<label>عنوان البلاغ</label>
+<input id="address" type="text" placeholder="اكتب الشارع أو المكان أو اسم المنشأة">
+<div class="grid">
+<button class="blue" onclick="showIncident()">📍 تحديد البلاغ</button>
+<button class="green" onclick="myLocation()">📡 موقعي الحالي</button>
+<button class="dark" onclick="loadLast()">💾 آخر بلاغ</button>
+<button class="red" onclick="call180()">☎️ طوارئ 180</button>
 </div>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</div>
+<div class="card">
+<div class="mapbox"><iframe id="mapFrame" src="https://www.openstreetmap.org/export/embed.html?bbox=31.0%2C29.8%2C31.5%2C30.3&layer=mapnik" loading="lazy"></iframe></div>
+<div id="status" class="status">جاهز لاستقبال البلاغ</div>
+<div id="info" class="info">اكتب عنوان البلاغ ثم اضغط «موقعي الحالي» أو «فتح المسار في Google Maps».</div>
+</div>
+<div class="card">
+<div class="grid">
+<button class="blue" onclick="openRoute()">🗺️ فتح المسار في Google Maps</button>
+<button class="green" onclick="shareWhatsApp()">📱 مشاركة واتساب</button>
+<button class="orange" onclick="saveReport(true)">💾 حفظ البلاغ</button>
+<button class="dark" onclick="printReport()">🖨️ طباعة البلاغ</button>
+</div>
+</div>
+</div>
+<div class="footer">مطافي الجيزة 🚒 — نظام توجيه البلاغات</div>
 <script>
-// الـ 62 نقطة من الصور
-const hydrants = [
-{ name: "الدقي" },{ name: "العجوزة" },{ name: "امبابة" },{ name: "شمال الجيزة" },{ name: "الدقي - امام السفارة السعودية" },
-{ name: "محولات غرب" },{ name: "الوراق" },{ name: "بشتيل" },{ name: "المنيرة الغربية" },{ name: "المصل واللقاح" },
-{ name: "أوسيم" },{ name: "إدارة الغرب الاستديو" },{ name: "الطالبية" },{ name: "العمرانية" },{ name: "جامعة القاهرة" },
-{ name: "المنيب الجديدة" },{ name: "المنيب القديمة" },{ name: "منشاة البكاري" },{ name: "أبو الهول" },{ name: "المتحف" },
-{ name: "همدان" },{ name: "بولاق الدكرور" },{ name: "حدائق الاهرام" },{ name: "الواحات" },{ name: "أبو النمرس" },
-{ name: "الحوامدية" },{ name: "البدرشين" },{ name: "الشهيد" },{ name: "العياط" },{ name: "القطوري" },
-{ name: "الصف" },{ name: "أطفيح" },{ name: "المنوات" },{ name: "البرميل" },{ name: "صول" },
-{ name: "القبابات" },{ name: "السادس" },{ name: "السابع" },{ name: "الحادى عشر" },{ name: "سوزوكي" },
-{ name: "المنشات" },{ name: "اكتوبر" },{ name: "سوق الجملة" },{ name: "المتميز" },{ name: "الامن" },
-{ name: "الصناعية" },{ name: "ذايد الاول" },{ name: "الشيخ زايد الحي الاول" },{ name: "حدائق اكتوبر" },{ name: "أبو رواش" },
-{ name: "موبيكا" },{ name: "التقل الخفيف" },{ name: "المنصورية" },{ name: "أبو غالب" },{ name: "بني سلامة" },
-{ name: "وردان" },{ name: "المناشي" },{ name: "البويطي" },{ name: "منديشة" },{ name: "ك 56 السلمانية" },
-{ name: "كرداسة" },{ name: "اوسيم مركز" }
-];
+var stations=["الدقي","العجوزة","امبابة","شمال الجيزة","الدقي - امام السفارة السعودية","محولات غرب","الوراق","بشتيل","المنيرة الغربية","المصل واللقاح","أوسيم","إدارة الغرب الاستديو","الطالبية","العمرانية","جامعة القاهرة","المنيب الجديدة","المنيب القديمة","منشاة البكاري","أبو الهول","المتحف","همدان","بولاق الدكرور","حدائق الاهرام","الواحات","أبو النمرس","الحوامدية","البدرشين","الشهيد","العياط","القطوري","الصف","أطفيح","المنوات","البرميل","صول","القبابات","السادس","السابع","الحادى عشر","سوزوكي","المنشات","اكتوبر","سوق الجملة","المتميز","الامن","الصناعية","ذايد الاول","الشيخ زايد الحي الاول","حدائق اكتوبر","أبو رواش","موبيكا","التقل الخفيف","المنصورية","أبو غالب","بني سلامة","وردان","المناشي","البويطي","منديشة","ك 56 السلمانية","كرداسة","اوسيم مركز"];
 
-let map, lastRouteLink = "", incidentMarker, drawnItems = [], incidentLat, incidentLng;
-const hydrantIcon = L.divIcon({ html: '🧯', className: '', iconSize: [28, 28] });
-const incidentIcon = L.divIcon({ html: '🔥', className: '', iconSize: [35, 35] });
+var sel=document.getElementById("station");
+var mapFrame=document.getElementById("mapFrame");
+var statusBox=document.getElementById("status");
+var info=document.getElementById("info");
 
-window.onload = function() {
-    let select = document.getElementById('management');
-    hydrants.forEach(h => {
-        let option = document.createElement('option');
-        option.text = h.name;
-        select.add(option);
-    });
+var report={
+    station:"",
+    address:"",
+    myLat:null,
+    myLon:null,
+    usingMyLocation:false,
+    date:""
+};
 
-    map = L.map('map').setView([29.995, 31.172], 10);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+stations.forEach(function(s){
+    var o=document.createElement("option");
+    o.value=s;
+    o.textContent=s;
+    sel.appendChild(o);
+});
 
-    // تقدر تدوس على الخريطة برضو
-    map.on('click', function(e){
-        calcAndDraw(e.latlng.lat, e.latlng.lng);
-    });
+function setStatus(t){
+    statusBox.textContent=t;
 }
 
-function getDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371;
-    const dLat = (lat2-lat1) * Math.PI / 180;
-    const dLon = (lon2-lon1) * Math.PI / 180;
-    const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
-    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+function mapsSearch(q){
+    return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
 }
 
-function clearAll(){
-    drawnItems.forEach(l => map.removeLayer(l));
-    drawnItems = [];
-    if(incidentMarker) map.removeLayer(incidentMarker);
-    document.getElementById('result').style.display = "none";
-    lastRouteLink = "";
+function routeUrl(origin,destination){
+    var u="https://www.google.com/maps/dir/?api=1"+
+           "&destination="+encodeURIComponent(destination)+
+           "&travelmode=driving";
+    if(origin){
+        u+="&origin="+encodeURIComponent(origin);
+    }
+    return u;
 }
 
-function searchAddress(){
-let address = document.getElementById('address').value;
-if(address.trim() == ""){ alert("اكتب عنوان البلاغ"); return; }
-
-document.getElementById('result').style.display = "block";
-document.getElementById('result').innerHTML = "جاري البحث عن العنوان...";
-
-fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address + ", الجيزة, مصر")}`)
-.then(res => res.json())
-.then(data => {
-    if(data.length == 0){ alert("العنوان مش واضح \n جرب: شارع الهرم الطالبية الجيزة"); return; }
-    calcAndDraw(parseFloat(data[0].lat), parseFloat(data[0].lon));
-}).catch(err => alert("اتأكد من النت"));
+/* فتح Google Maps بدون طلب GPS من ملف HTML */
+function openGoogleMapsForCurrentLocation(destination){
+    return "https://www.google.com/maps/dir/?api=1"+
+           "&destination="+encodeURIComponent(destination)+
+           "&travelmode=driving";
+}
+function saveState(){
+    localStorage.setItem("lastFireReport",JSON.stringify(report));
 }
 
-function calcAndDraw(addrLat, addrLng){
-    clearAll();
-    incidentLat = addrLat; incidentLng = addrLng;
+/* تحديد البلاغ: لا يشترط اختيار محطة */
+function showIncident(){
 
-    incidentMarker = L.marker([addrLat, addrLng], {icon: incidentIcon}).addTo(map).bindPopup("🔥 مكان البلاغ").openPopup();
-    drawnItems.push(incidentMarker);
-    map.setView([addrLat, addrLng], 13);
+    var a=document.getElementById("address").value.trim();
 
-    let promises = hydrants.map(h =>
-        fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(h.name + ", الجيزة, مصر")}`)
-       .then(res => res.json())
-       .then(data => {
-            if(data.length > 0){
-                h.lat = parseFloat(data[0].lat);
-                h.lng = parseFloat(data[0].lon);
-                h.distance = getDistance(addrLat, addrLng, h.lat, h.lng);
-                L.marker([h.lat, h.lng], {icon: hydrantIcon}).addTo(map).bindPopup(`<b>🧯 ${h.name}</b>`);
-            }
-        }).catch(()=>{})
+    if(!a){
+        alert("اكتب عنوان البلاغ أولاً");
+        return;
+    }
+
+    report.address=a;
+
+    if(report.myLat!==null && report.myLon!==null){
+        report.usingMyLocation=true;
+    }
+
+    if(sel.value.trim() && !report.usingMyLocation){
+        report.station=sel.value.trim();
+    }
+
+    mapFrame.src=mapsSearch(a+" الجيزة مصر");
+
+    setStatus("تم تحديد عنوان البلاغ");
+
+    var startText=report.usingMyLocation
+        ? "موقعي الحالي"
+        : (report.station || "لم يتم تحديد نقطة انطلاق");
+
+    info.innerHTML=
+        "<b>🚨 البلاغ</b><br>"+
+        "<b>نقطة الانطلاق:</b> "+esc(startText)+"<br>"+
+        "<b>العنوان:</b> "+esc(a)+"<br><br>"+
+        "اضغط «فتح المسار في Google Maps» لبدء الطريق.";
+
+    saveState();
+}
+
+/* موقعي الحالي */
+function myLocation(){
+
+    /*
+      ملاحظة مهمة:
+      الملف يعمل كـ file:// على الهاتف، ولذلك Chrome قد يمنع
+      navigator.geolocation حتى لو إذن الموقع في Chrome مفعّل.
+      لذلك لا نعتمد على GPS داخل ملف HTML.
+      Google Maps نفسه سيستخدم موقع الهاتف عند فتح المسار.
+    */
+
+    var a=document.getElementById("address").value.trim();
+
+    if(!a){
+        setStatus("📍 اكتب عنوان البلاغ أولاً");
+        alert("اكتب عنوان البلاغ أولاً، ثم اضغط «موقعي الحالي».");
+        return;
+    }
+
+    report.address=a;
+    report.usingMyLocation=true;
+    report.myLat=null;
+    report.myLon=null;
+
+    saveState();
+
+    setStatus("📡 جاري فتح Google Maps باستخدام موقع الهاتف...");
+
+    var u=openGoogleMapsForCurrentLocation(a+", الجيزة مصر");
+
+    window.open(u,"_blank");
+}
+/* استخدام نقطة من القائمة */
+function useStation(){
+
+    var s=sel.value.trim();
+
+    if(!s){
+        alert("اختر نقطة المطافي أولاً");
+        return;
+    }
+
+    report.station=s;
+    report.usingMyLocation=false;
+    report.myLat=null;
+    report.myLon=null;
+
+    setStatus("🚒 تم اختيار نقطة المطافي");
+
+    info.innerHTML=
+        "<b>🚒 نقطة الانطلاق:</b> "+esc(s)+
+        "<br><br>اكتب عنوان البلاغ ثم اضغط «تحديد البلاغ» أو «فتح المسار».";
+
+    saveState();
+}
+
+/* المسار */
+function openRoute(){
+
+    var a=document.getElementById("address").value.trim();
+
+    if(!a){
+        alert("اكتب عنوان البلاغ أولاً");
+        return;
+    }
+
+    report.address=a;
+    saveState();
+
+    /*
+      لو عندنا إحداثيات محفوظة نستخدمها.
+      وإلا نترك Google Maps يحدد موقع الهاتف بنفسه.
+    */
+    var u;
+
+    if(report.myLat!==null && report.myLon!==null){
+        u=routeUrl(
+            report.myLat+","+report.myLon,
+            a+", الجيزة مصر"
+        );
+    }
+    else if(sel.value.trim()){
+        report.station=sel.value.trim();
+        u=routeUrl(
+            sel.value.trim()+", الجيزة مصر",
+            a+", الجيزة مصر"
+        );
+    }
+    else if(report.station){
+        u=routeUrl(
+            report.station+", الجيزة مصر",
+            a+", الجيزة مصر"
+        );
+    }
+    else{
+        u=openGoogleMapsForCurrentLocation(a+", الجيزة مصر");
+    }
+
+    setStatus("🗺️ جاري فتح Google Maps...");
+
+    window.open(u,"_blank");
+}
+/* واتساب */
+function shareWhatsApp(){
+
+    var a=document.getElementById("address").value.trim();
+
+    if(!a){
+        alert("اكتب عنوان البلاغ أولاً");
+        return;
+    }
+
+    var startText="";
+    var u="";
+
+    if(report.myLat!==null && report.myLon!==null){
+        startText="موقعي الحالي";
+        u=routeUrl(
+            report.myLat+","+report.myLon,
+            a+", الجيزة مصر"
+        );
+    }
+    else if(sel.value.trim()){
+        startText=sel.value.trim();
+        u=routeUrl(
+            sel.value.trim()+", الجيزة مصر",
+            a+", الجيزة مصر"
+        );
+    }
+    else if(report.station){
+        startText=report.station;
+        u=routeUrl(
+            report.station+", الجيزة مصر",
+            a+", الجيزة مصر"
+        );
+    }
+    else{
+        startText="موقعي الحالي";
+        u=openGoogleMapsForCurrentLocation(a+", الجيزة مصر");
+    }
+
+    var text=
+        "🚨 بلاغ طوارئ مطافي 🚒\n\n"+
+        "نقطة الانطلاق: "+startText+"\n"+
+        "عنوان البلاغ: "+a+"\n\n"+
+        "🗺️ فتح المسار:\n"+u;
+
+    saveState();
+
+    window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank");
+}
+/* حفظ */
+function saveReport(show){
+
+    var a=document.getElementById("address").value.trim();
+
+    if(!a){
+        if(show) alert("اكتب عنوان البلاغ أولاً");
+        return;
+    }
+
+    report.address=a;
+    report.station=sel.value.trim();
+    report.date=new Date().toLocaleString("ar-EG");
+
+    saveState();
+
+    if(show)
+        alert("✅ تم حفظ آخر بلاغ بنجاح");
+}
+
+/* آخر بلاغ */
+function loadLast(){
+
+    var x=localStorage.getItem("lastFireReport");
+
+    if(!x){
+        alert("لا يوجد بلاغ محفوظ");
+        return;
+    }
+
+    try{
+
+        var r=JSON.parse(x);
+        report=r;
+
+        sel.value=r.station||"";
+        document.getElementById("address").value=r.address||"";
+
+        setStatus("💾 تم استرجاع آخر بلاغ");
+
+        var startText=
+            r.usingMyLocation
+            ? "موقعي الحالي"
+            : (r.station||"غير محدد");
+
+        info.innerHTML=
+            "<b>💾 آخر بلاغ</b><br>"+
+            "<b>نقطة الانطلاق:</b> "+esc(startText)+"<br>"+
+            "<b>العنوان:</b> "+esc(r.address||"")+"<br>"+
+            "<b>التاريخ:</b> "+esc(r.date||"");
+
+    }catch(e){
+        alert("بيانات البلاغ المحفوظ غير صالحة");
+    }
+}
+
+/* طباعة */
+function printReport(){
+
+    var a=document.getElementById("address").value.trim();
+
+    if(!a){
+        alert("اكتب عنوان البلاغ أولاً");
+        return;
+    }
+
+    var startText=
+        (report.myLat!==null && report.myLon!==null)
+        ? "موقعي الحالي"
+        : (sel.value.trim() || report.station || "غير محدد");
+
+    var w=window.open("","_blank");
+
+    if(!w){
+        alert("المتصفح منع نافذة الطباعة.");
+        return;
+    }
+
+    w.document.write(
+        '<html lang="ar" dir="rtl">'+
+        '<head><meta charset="UTF-8">'+
+        '<title>بلاغ طوارئ مطافي</title>'+
+        '<style>'+
+        'body{font-family:Tahoma;padding:30px}'+
+        'h1{text-align:center}'+
+        '.box{border:1px solid #333;padding:20px;line-height:2}'+
+        '</style></head><body>'+
+        '<h1>🚒 بلاغ طوارئ مطافي</h1>'+
+        '<div class="box">'+
+        '<b>نقطة الانطلاق:</b> '+esc(startText)+
+        '<br><b>عنوان البلاغ:</b> '+esc(a)+
+        '<br><b>التاريخ:</b> '+new Date().toLocaleString("ar-EG")+
+        '</div></body></html>'
     );
 
-    Promise.all(promises).then(() => {
-        let valid = hydrants.filter(h => h.lat && h.distance);
-        valid.sort((a,b) => a.distance - b.distance);
-        let nearest = valid.slice(0,3);
+    w.document.close();
+    w.focus();
 
-        let html = `<b>اقرب 3 نقاط اطفاء:</b><br>`;
-        nearest.forEach((h, i) => {
-            let time = Math.round((h.distance / 40) * 60);
-            let line = L.polyline([[addrLat, addrLng], [h.lat, h.lng]], {color: 'red', weight: 4, dashArray: '10,10'}).addTo(map);
-            drawnItems.push(line);
-            let midLat = (addrLat + h.lat) / 2;
-            let midLng = (addrLng + h.lng) / 2;
-            let label = L.marker([midLat, midLng], {
-                icon: L.divIcon({className: 'distance-label', html: `${h.distance.toFixed(1)} كم`})
-            }).addTo(map);
-            drawnItems.push(label);
-            L.circleMarker([h.lat, h.lng], {color:'green', radius:14, fillOpacity:0.9}).addTo(map);
-            html += `${i+1}. ${h.name} - ${h.distance.toFixed(1)} كم - ${time} دقيقة<br>`;
-        });
-        document.getElementById('result').innerHTML = html;
+    setTimeout(function(){
+        w.print();
+    },500);
+}
 
-        let waypoints = nearest.map(h => `${h.lat},${h.lng}`).join('|');
-        lastRouteLink = `https://www.google.com/maps/dir/?api=1&origin=${addrLat},${addrLng}&destination=${addrLat},${addrLng}&waypoints=${waypoints}`;
+/* اتصال 180 */
+function call180(){
+    window.location.href="tel:180";
+}
+
+function esc(x){
+    return String(x).replace(/[&<>"']/g,function(c){
+        return {
+            "&":"&amp;",
+            "<":"&lt;",
+            ">":"&gt;",
+            '"':"&quot;",
+            "'":"&#39;"
+        }[c];
     });
-}
-
-function showRoute(){
-if(lastRouteLink == ""){ alert("حدد مكان البلاغ الاول من الخانة او الخريطة"); return; }
-window.location.href = lastRouteLink;
-}
-
-function showAllHydrants(){
-    map.setView([29.995, 31.172], 10);
-}
-
-function shareWhatsApp(){
-if(lastRouteLink == ""){ alert("حدد مكان البلاغ الاول"); return; }
-let text = "بلاغ مطافي 🚒\nنقطة الاطفاء: " + document.getElementById('management').value + "\nعنوان البلاغ: " + document.getElementById('address').value + "\nالمسار: " + lastRouteLink;
-window.location.href = "https://wa.me/?text=" + encodeURIComponent(text);
-}
-</script>
-<script>
-if ("serviceWorker" in navigator && location.protocol === "https:") {
-  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(()=>{}));
 }
 </script>
 </body>
